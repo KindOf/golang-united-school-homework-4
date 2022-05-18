@@ -58,7 +58,7 @@ func parse(input string) (result []int, err error) {
 			if i == len(input)-1 {
 				currInt, err := strconv.Atoi(curr)
 				if err != nil {
-					return []int{}, errorNotTwoOperands
+					return []int{}, err
 				}
 				result = append(result, currInt)
 			}
