@@ -4,7 +4,6 @@ import (
 	"errors"
 	"fmt"
 	"strconv"
-	"strings"
 	"unicode"
 )
 
@@ -35,20 +34,17 @@ func StringSum(input string) (output string, err error) {
 }
 
 func parse(input string) (result []int, err error) {
-	s := strings.TrimFunc(input, func(r rune) bool {
-		return unicode.IsSpace(r)
-	})
-	if len(s) == 0 {
+	if len(input) == 0 {
 		return nil, errorEmptyInput
 	}
 	var curr string
-	for i, r := range s {
+	for i, r := range input {
+		if unicode.IsSpace(r) {
+			continue
+		}
 		if len(curr) == 0 {
 			curr += string(r)
 		} else {
-			if unicode.IsDigit(r) {
-				curr += string(r)
-			}
 			if string(r) == "-" || string(r) == "+" {
 				currInt, err := strconv.Atoi(curr)
 				if err != nil {
@@ -56,8 +52,10 @@ func parse(input string) (result []int, err error) {
 				}
 				result = append(result, currInt)
 				curr = string(r)
+			} else {
+				curr += string(r)
 			}
-			if i == len(s)-1 {
+			if i == len(input)-1 {
 				currInt, err := strconv.Atoi(curr)
 				if err != nil {
 					return []int{}, errorNotTwoOperands
