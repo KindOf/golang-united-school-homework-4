@@ -1,6 +1,9 @@
 package string_sum
 
-import "testing"
+import (
+	"errors"
+	"testing"
+)
 
 func TestStringSum(t *testing.T) {
 
@@ -45,7 +48,7 @@ func TestStringSum(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			gotOutput, err := StringSum(tt.input)
-			if err != tt.wantErr {
+			if errors.Unwrap(err) != tt.wantErr {
 				t.Errorf("StringSum() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
