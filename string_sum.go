@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"strconv"
+	"strings"
 	"unicode"
 )
 
@@ -13,6 +14,8 @@ var (
 	errorEmptyInput = errors.New("input is empty")
 	// Use when the expression has number of operands not equal to two
 	errorNotTwoOperands = errors.New("expecting two operands, but received more or less")
+
+	separator = ","
 )
 
 // Implement a function that computes the sum of two int numbers written as a string
@@ -37,35 +40,39 @@ func parse(input string) (result []int, err error) {
 	if len(input) == 0 {
 		return nil, errorEmptyInput
 	}
-	var curr string
-	for i, r := range input {
+
+	var operand string
+
+	for _, r := range input {
 		if unicode.IsSpace(r) {
 			continue
 		}
-		if len(curr) == 0 {
-			curr += string(r)
-		} else {
-			if string(r) == "-" || string(r) == "+" {
-				currInt, err := strconv.Atoi(curr)
-				if err != nil {
-					return []int{}, err
-				}
-				result = append(result, currInt)
-				curr = string(r)
-			} else {
-				curr += string(r)
-			}
-			if i == len(input)-1 {
-				currInt, err := strconv.Atoi(curr)
-				if err != nil {
-					return []int{}, err
-				}
-				result = append(result, currInt)
-			}
+
+		if isOperandEnd(r) && len(operand) > 0 {
+			operand += separator
 		}
+
+		operand += string(r)
 	}
+
+	os := strings.Split(operand, separator)
+
+	for _, o := range os {
+		currInt, err := strconv.Atoi(o)
+
+		if err != nil {
+			return []int{}, err
+		}
+
+		result = append(result, currInt)
+	}
+
 	if len(result) != 2 {
 		return []int{}, errorNotTwoOperands
 	}
 	return result, nil
+}
+
+func isOperandEnd(r rune) bool {
+	return r == 43 || r == 45
 }

@@ -24,13 +24,18 @@ func TestStringSum(t *testing.T) {
 			wantOutput: "2",
 			wantErr:    nil,
 		}, {
+			name:       "should sum \" -24 - 55 \"",
+			input:      " -24 - 55 ",
+			wantOutput: "-79",
+			wantErr:    nil,
+		}, {
 			name:       "should sum \"-3-5\"",
 			input:      "-3-5",
 			wantOutput: "-8",
 			wantErr:    nil,
 		}, {
-			name:       "should sum \" -3 + 5\"",
-			input:      " -3 + 5",
+			name:       "should sum \" -3 + 5  \"",
+			input:      " -3 + 5  ",
 			wantOutput: "2",
 			wantErr:    nil,
 		}, {
